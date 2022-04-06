@@ -23,6 +23,7 @@ function App() {
       .then(result => {
         const user = result.user;
         console.log(user)
+        setUser(user)
       })
       .catch(error => {
         console.error(error)
@@ -39,7 +40,7 @@ function App() {
   }
   return (
     <div className="App">
-      {user.displayName ?
+      {user.uid ?
         <button onClick={handleSignOut}>Sign out</button> :
         <div>
           <button onClick={googleSignIn}>Google sign in</button>
