@@ -1,13 +1,14 @@
 import './App.css';
 import app from './firebase.init';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from 'react';
 const auth = getAuth(app)
 function App() {
   const [user, setUser] = useState({})
-  const provider = new GoogleAuthProvider();
+  const googleProvider = new GoogleAuthProvider();
+  const githubProvider = new GithubAuthProvider();
   const googleSignIn = () => {
-    signInWithPopup(auth, provider)
+    signInWithPopup(auth, googleProvider)
       .then(result => {
         const user = result.user;
         setUser(user)
@@ -15,6 +16,16 @@ function App() {
       })
       .catch(error => {
         console.log(error)
+      })
+  }
+  const githubSignIn = () => {
+    signInWithPopup(auth, githubProvider)
+      .then(result => {
+        const user = result.user;
+        console.log(user)
+      })
+      .catch(error => {
+        console.error(error)
       })
   }
   const handleSignOut = () => {
@@ -30,7 +41,10 @@ function App() {
     <div className="App">
       {user.displayName ?
         <button onClick={handleSignOut}>Sign out</button> :
-        <button onClick={googleSignIn}>Google sign in</button>
+        <div>
+          <button onClick={googleSignIn}>Google sign in</button>
+          <button onClick={githubSignIn}>Github sign in</button>
+        </div>
       }
       <h2>Name: {user.displayName}</h2>
       <img src={user.photoURL} alt="" />
